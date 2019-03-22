@@ -5,9 +5,11 @@ import java.util.Map.Entry;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.apache.commons.lang.StringUtils;
 
 import io.github.optjava.generated.Java9Lexer;
 import io.github.optjava.generated.Java9Parser;
@@ -58,5 +60,25 @@ public class Sample1 {
 		System.out.println( prc.getRuleIndex());
 		System.out.println( this.ruleIndexMap.get(prc.getRuleIndex()));
 		System.out.println(tree.getChildCount());
+		dumpRecursive(tree, 0);
+	}
+	private void dumpRecursive(ParseTree tree, int level) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(StringUtils.repeat(" ", level));
+		Object payload = tree.getPayload();
+		if(payload instanceof ParserRuleContext) {
+			ParserRuleContext prc = (ParserRuleContext) tree.getPayload();
+			sb.append("<"+this.ruleIndexMap.get(prc.getRuleIndex())+">");
+			System.out.println(sb.toString());
+			for(int i=0; i<tree.getChildCount(); i++) {
+				dumpRecursive(tree.getChild(i), level+1);
+			}
+		}
+		else if (payload instanceof CommonToken) {
+			CommonToken ct = (CommonToken) tree.getPayload();
+			//sb.append("<"+ct.getText()+">");
+			sb.append(ct.getText());
+			System.out.println(sb.toString());
+		}
 	}
 }
