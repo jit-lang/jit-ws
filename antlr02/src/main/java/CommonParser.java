@@ -50,14 +50,14 @@ public class CommonParser {
 	}
 
 	public void dump(ParseTree tree) {
-		System.out.println(tree.toStringTree(this.parser));
-		System.out.println(tree.toStringTree());
-		System.out.println(tree.getPayload().getClass().getName());
-		System.out.println(tree.getPayload().getClass().getSimpleName());
-		ParserRuleContext prc = (ParserRuleContext) tree.getPayload();
-		System.out.println( prc.getRuleIndex());
-		System.out.println( this.ruleIndexMap.get(prc.getRuleIndex()));
-		System.out.println(tree.getChildCount());
+		//System.out.println(tree.toStringTree(this.parser));
+		//System.out.println(tree.toStringTree());
+		//System.out.println(tree.getPayload().getClass().getName());
+		//System.out.println(tree.getPayload().getClass().getSimpleName());
+		//ParserRuleContext prc = (ParserRuleContext) tree.getPayload();
+		//System.out.println( prc.getRuleIndex());
+		//System.out.println( this.ruleIndexMap.get(prc.getRuleIndex()));
+		//System.out.println(tree.getChildCount());
 		dumpRecursive(tree, 0);
 	}
 	private void dumpRecursive(ParseTree tree, int level) {
