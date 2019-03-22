@@ -1,0 +1,6 @@
+public class Main() {
+  public static main() {
+    int answer = 1234;
+  	JitIO.witeln("answer is: "..answer);
+  }
+}

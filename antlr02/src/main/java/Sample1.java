@@ -1,3 +1,5 @@
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,17 +9,17 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.TokenSource;
+import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.commons.lang.StringUtils;
-
-import io.github.optjava.generated.Java9Lexer;
-import io.github.optjava.generated.Java9Parser;
 
 public class Sample1 {
 
 	CommonTokenStream tokens = null;
-	Java9Parser parser = null;
+	Parser parser = null;
 	Map<Integer, String> ruleIndexMap = new HashMap<Integer, String>();
 	Map<Integer, String> tokenTypeMap = new HashMap<Integer, String>();
 
@@ -27,15 +29,24 @@ public class Sample1 {
 		String text = JitIO.readFileUtf8("src/main/java/Sample2.java");
 		System.out.println(text);
 	    Sample1 p = new Sample1();
-		ParseTree tree = p.parse(text);
+		ParseTree tree = p.parse("io.github.optjava.generated.Java9", "compilationUnit", text);
 		p.dump(tree);
 	}
 
-	public ParseTree parse(String text) throws Exception {
+	public Sample1() {
+	}
+
+	public ParseTree parse(String grammar, String topRule, String text) throws Exception {
+		Class lexerC = Class.forName(grammar + "Lexer");
+		Constructor lexerCons = lexerC.getConstructor(CharStream.class);
 		CharStream stream = CharStreams.fromString(text);
-		Java9Lexer lexer = new Java9Lexer(stream);
-		this.tokens = new CommonTokenStream(lexer);
-		this.parser = new Java9Parser(tokens);
+		Object lexer = lexerCons.newInstance(stream);
+		//Java9Lexer lexer = new Java9Lexer(stream);
+		this.tokens = new CommonTokenStream((TokenSource)lexer);
+		Class parserC = Class.forName(grammar + "Parser");
+		Constructor parserCons = parserC.getConstructor(TokenStream.class);
+		this.parser = (Parser)parserCons.newInstance(this.tokens);
+		//this.parser = new Java9Parser(tokens);
 		Map<String, Integer> ruleIndexMapReverse = this.parser.getRuleIndexMap();
 		this.ruleIndexMap.clear();
 		for(Entry<String, Integer> entry: ruleIndexMapReverse.entrySet()) {
@@ -46,7 +57,9 @@ public class Sample1 {
 		for(Entry<String, Integer> entry: tokenTypeMapReverse.entrySet()) {
 			this.tokenTypeMap.put(entry.getValue(), entry.getKey());
 		}
-		ParseTree tree = parser.compilationUnit();
+		Method ruleMethod = parser.getClass().getMethod(topRule, null);
+		ParseTree tree = (ParseTree)ruleMethod.invoke(parser, null);
+		//ParseTree tree = parser.compilationUnit();
 		//System.out.println(tree.toStringTree(parser));
 		return tree;
 	}
