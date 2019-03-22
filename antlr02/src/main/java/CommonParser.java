@@ -26,20 +26,14 @@ public class CommonParser {
 	}
 
 	public ParseTree parse(String grammar, String topRule, String text) throws Exception {
-		@SuppressWarnings("rawtypes")
-		Class lexerC = Class.forName(grammar + "Lexer");
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		Constructor lexerCons = lexerC.getConstructor(CharStream.class);
+		Class<?> lexerC = Class.forName(grammar + "Lexer");
+		Constructor<?> lexerCons = lexerC.getConstructor(CharStream.class);
 		CharStream stream = CharStreams.fromString(text);
 		Object lexer = lexerCons.newInstance(stream);
-		//Java9Lexer lexer = new Java9Lexer(stream);
 		this.tokens = new CommonTokenStream((TokenSource)lexer);
-		@SuppressWarnings("rawtypes")
-		Class parserC = Class.forName(grammar + "Parser");
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		Constructor parserCons = parserC.getConstructor(TokenStream.class);
+		Class<?> parserC = Class.forName(grammar + "Parser");
+		Constructor<?> parserCons = parserC.getConstructor(TokenStream.class);
 		this.parser = (Parser)parserCons.newInstance(this.tokens);
-		//this.parser = new Java9Parser(tokens);
 		Map<String, Integer> ruleIndexMapReverse = this.parser.getRuleIndexMap();
 		this.ruleIndexMap.clear();
 		for(Entry<String, Integer> entry: ruleIndexMapReverse.entrySet()) {
@@ -50,9 +44,8 @@ public class CommonParser {
 		for(Entry<String, Integer> entry: tokenTypeMapReverse.entrySet()) {
 			this.tokenTypeMap.put(entry.getValue(), entry.getKey());
 		}
-		Method ruleMethod = parser.getClass().getMethod(topRule, null);
-		ParseTree tree = (ParseTree)ruleMethod.invoke(parser, null);
-		//ParseTree tree = parser.compilationUnit();
+		Method ruleMethod = parser.getClass().getMethod(topRule, new Class<?>[0]);
+		ParseTree tree = (ParseTree)ruleMethod.invoke(parser, new Object[0]);
 		return tree;
 	}
 
