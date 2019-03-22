@@ -1,14 +1,4 @@
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.Interval;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-
 import com.google.googlejavaformat.java.Formatter;
-
 import io.github.optjava.generated.Java9Lexer;
 import io.github.optjava.generated.Java9Parser;
 import io.github.optjava.generated.Java9Parser.AnnotationTypeDeclarationContext;
@@ -21,6 +11,14 @@ import io.github.optjava.generated.Java9Parser.PackageDeclarationContext;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.misc.Interval;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class Listener extends AbstractJava9Listener {
 
@@ -70,7 +68,7 @@ public class Listener extends AbstractJava9Listener {
     int start = interval.a;
     int stop = interval.b;
     if (start < 0 || stop < 0) return "";
-    //this.tokens.fill();
+    // this.tokens.fill();
     if (stop >= tokens.size()) stop = tokens.size() - 1;
     StringBuilder buf = new StringBuilder();
     for (int i = start; i <= stop; i++) {
@@ -87,7 +85,7 @@ public class Listener extends AbstractJava9Listener {
     int start = interval.a;
     int stop = interval.b;
     if (start < 0 || stop < 0) return "";
-    //this.tokens.fill();
+    // this.tokens.fill();
     if (stop >= tokens.size()) stop = tokens.size() - 1;
     StringBuilder buf = new StringBuilder();
     for (int i = start; i <= stop; i++) {

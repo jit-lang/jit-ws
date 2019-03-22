@@ -46,6 +46,7 @@ dependencies {
 	compile group: 'com.ibm.icu', name: 'icu4j', version: '63.1'
 	compile group: 'com.ibm.icu', name: 'icu4j-charset', version: '63.1'
 	compile group: 'com.ibm.icu', name: 'icu4j-localespi', version: '63.1'
+	compile group: 'commons-io', name: 'commons-io', version: '2.6' // 2019/03/22
     testCompile 'junit:junit:4.12'
 }
 
@@ -72,3 +73,16 @@ compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
 mainClassName = 'Listener'
+
+task runSample1(type:JavaExec) {
+   classpath = sourceSets.main.runtimeClasspath
+   main = "Sample1"
+   args = [ "abc", "def漢字" ]
+}
+[runSample1]*.group = 'application'
+
+task runSample2(type:JavaExec) {
+   classpath = sourceSets.main.runtimeClasspath
+   main = "Sample2"
+}
+[runSample2]*.group = 'application'
