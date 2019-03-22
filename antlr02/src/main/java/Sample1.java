@@ -16,44 +16,47 @@ public class Sample1 {
 
 	CommonTokenStream tokens = null;
 	Java9Parser parser = null;
+	Map<Integer, String> ruleIndexMap = new HashMap<Integer, String>();
+	Map<Integer, String> tokenTypeMap = new HashMap<Integer, String>();
 
 	// メイン
 	public static void main(String[] args) throws Exception {
 		System.out.println(Arrays.asList(args));
 		String text = JitIO.readFileUtf8("src/main/java/Sample2.java");
 		System.out.println(text);
-		//System.out.println(
-		//    JitIO.readHttpUtf8("https://github.com/javacommons/TIL/raw/master/testdata/B.java"));
-	    Sample1 l = new Sample1();
-		ParseTree tree = l.parse(text);
-		Map<String, Integer> ruleIndexMap = l.parser.getRuleIndexMap();
-		Map<Integer, String> ruleIndexMap2 = new HashMap<Integer, String>();
-		for(Entry<String, Integer> entry: ruleIndexMap.entrySet()) {
-			ruleIndexMap2.put(entry.getValue(), entry.getKey());
+	    Sample1 p = new Sample1();
+		ParseTree tree = p.parse(text);
+		p.dump(tree);
+	}
+
+	public ParseTree parse(String text) throws Exception {
+		CharStream stream = CharStreams.fromString(text);
+		Java9Lexer lexer = new Java9Lexer(stream);
+		this.tokens = new CommonTokenStream(lexer);
+		this.parser = new Java9Parser(tokens);
+		Map<String, Integer> ruleIndexMapReverse = this.parser.getRuleIndexMap();
+		this.ruleIndexMap.clear();
+		for(Entry<String, Integer> entry: ruleIndexMapReverse.entrySet()) {
+			this.ruleIndexMap.put(entry.getValue(), entry.getKey());
 		}
-		System.out.println(tree.toStringTree(l.parser));
+		Map<String, Integer> tokenTypeMapReverse = this.parser.getTokenTypeMap();
+		this.tokenTypeMap.clear();
+		for(Entry<String, Integer> entry: tokenTypeMapReverse.entrySet()) {
+			this.tokenTypeMap.put(entry.getValue(), entry.getKey());
+		}
+		ParseTree tree = parser.compilationUnit();
+		//System.out.println(tree.toStringTree(parser));
+		return tree;
+	}
+
+	public void dump(ParseTree tree) {
+		System.out.println(tree.toStringTree(this.parser));
 		System.out.println(tree.toStringTree());
 		System.out.println(tree.getPayload().getClass().getName());
 		System.out.println(tree.getPayload().getClass().getSimpleName());
 		ParserRuleContext prc = (ParserRuleContext) tree.getPayload();
 		System.out.println( prc.getRuleIndex());
-		System.out.println( ruleIndexMap2.get(prc.getRuleIndex()));
-		//System.out.println( prc.getAltNumber());
-		//System.out.println(Arrays.asList(l.parser.tokenNames));
+		System.out.println( this.ruleIndexMap.get(prc.getRuleIndex()));
 		System.out.println(tree.getChildCount());
-	}
-
-	public ParseTree parse(String text) {
-		try {
-		    CharStream stream = CharStreams.fromString(text);
-			Java9Lexer lexer = new Java9Lexer(stream);
-			this.tokens = new CommonTokenStream(lexer);
-			this.parser = new Java9Parser(tokens);
-			ParseTree tree = parser.compilationUnit();
-			//System.out.println(tree.toStringTree(parser));
-			return tree;
-		} catch (IllegalArgumentException iae) {
-			throw iae;
-		}
 	}
 }
