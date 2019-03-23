@@ -76,6 +76,13 @@ public class CommonParser {
 			CommonToken ct = (CommonToken) tree.getPayload();
 			//sb.append("<"+ct.getText()+">");
 			sb.append(ct.getText());
+			String tokenType = this.tokenTypeMap.get(ct.getType());
+			if(tokenType.charAt(0) != '\'') {
+				sb.append(" (=");
+				sb.append(tokenType);
+				sb.append(")");
+			}
+			//sb.append(this.tokenTypeMap.get(ct.getType()));
 			System.out.println(sb.toString());
 		}
 	}
