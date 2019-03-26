@@ -30,7 +30,7 @@ public class JitIO {
     public static String readResUtf8(String name) throws Exception {
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         InputStream stream = classLoader.getResourceAsStream(name);
-        String content = IOUtils.toString(stream, "UTF-8");
+        String content = IOUtils.toString(stream, StandardCharsets.UTF_8);
         return content;
     }
 
