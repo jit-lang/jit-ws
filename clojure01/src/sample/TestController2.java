@@ -10,12 +10,11 @@ import javafx.scene.control.SplitPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class TestController implements Initializable {
+public class TestController2 implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
         //System.out.println(button1.getText());
-        //splitPane.setDividerPosition(splitPane.getWidth()/2);
     }
 
     @FXML

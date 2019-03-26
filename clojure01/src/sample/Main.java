@@ -1,7 +1,5 @@
 package sample;
 
-import clojure.java.api.Clojure;
-import clojure.lang.IFn;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,10 +13,14 @@ public class Main extends Application {
         //Parent root = FXMLLoader.load(getClass().getResource("test.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("test.fxml"));
         Parent root = loader.load();
-        TestController controller = (TestController)loader.getController();
-        controller.setButton1Text("テキスト");
+        TestController2 controller = (TestController2)loader.getController();
+        //controller.setButton1Text("テキスト");
+        //splitPane.setDividerPosition(splitPane.getWidth()/2);
+        controller.splitPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            controller.splitPane.setDividerPosition(0, 0.5);
+        });
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene((Parent)root, 1024, 768));
         primaryStage.show();
     }
 
