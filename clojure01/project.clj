@@ -11,4 +11,7 @@
                  [org.antlr/antlr4 "4.7.2"]                 ; // 2019/03/14
                  [org.antlr/antlr4-runtime "4.7.2"]         ; // 2019/03/14
                  ]
-    )
+  :aot :all
+  :main clojure01.core
+  :java-source-paths ["src"]
+  )
