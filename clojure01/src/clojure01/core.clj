@@ -22,7 +22,6 @@
   (pprint (antlr/parse java9 {:root "compilationUnit"} text))
   (def output (with-out-str (pprint (antlr/parse java9 {:root "compilationUnit"} text))))
   (TwinText/open  text output)
-  (println (JitIO/readResUtf8 "grammars/resJSON.g4"))
   )
 
 ;;(json "[1,2,3]")
