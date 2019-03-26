@@ -21,7 +21,8 @@
   ;(pprint (antlr/parse java9 {:root "compilationUnit"} "import java.lang.String;"))
   (pprint (antlr/parse java9 {:root "compilationUnit"} text))
   (def output (with-out-str (pprint (antlr/parse java9 {:root "compilationUnit"} text))))
-  (TwinText/open  text output)
+  ;(TwinText/open  text output)
+  (sample.Main/clMain text output)
   )
 
 ;;(json "[1,2,3]")

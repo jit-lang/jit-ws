@@ -36,4 +36,8 @@ public class Main extends Application {
         func.invoke(new String[0]);
         */
     }
+
+    public static void clMain(String left, String right) {
+        launch("--left="+left, "--right="+right);
+    }
 }
