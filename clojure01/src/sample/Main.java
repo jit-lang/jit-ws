@@ -13,7 +13,8 @@ public class Main extends Application {
         Parameters params = getParameters();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("test.fxml"));
         Parent root = loader.load();
-        TestController controller = (TestController)loader.getController();
+        //TestController controller = (TestController)loader.getController();
+        TestController controller = loader.getController();
         controller.splitPane.widthProperty().addListener((obs, oldVal, newVal) -> {
             controller.splitPane.setDividerPosition(0, 0.5);
         });
